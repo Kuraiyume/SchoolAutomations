@@ -1,5 +1,6 @@
 ### For BSIT 1-1 ###
 ### Author: Ivan/Kuraiyume ###
+import re
 
 banner = """
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⡤⠤⠤⠤⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -128,6 +129,51 @@ def binary_to_text(binary):
         text += chr(int(char_binary, 2))
     return text
 
+def binary_calculator(expression):
+    parts = re.findall(r'[01]+|[-+*/]', expression)
+    binaries = [part for part in parts if all(bit in '01' for bit in part)]
+    operators = [part for part in parts if part not in binaries]
+    decimals = [int(binary.rstrip('b'), 2) for binary in binaries]
+    result_decimal = decimals[0]
+    is_division = False
+    for i in range(1, len(decimals)):
+        operator = operators[i - 1]
+        if operator == '+':
+            result_decimal += decimals[i]
+        elif operator == '-':
+            result_decimal -= decimals[i]
+        elif operator == '*':
+            result_decimal *= decimals[i]
+        elif operator == '/':
+            if decimals[i] == 0:
+                print("Cannot divide by zero.")
+                return ""
+            result_decimal //= decimals[i]
+            is_division = True
+    output = "Binary Value:\n"
+    for j in range(len(binaries)):
+        output += f"{binaries[j]} "
+        if j < len(operators):
+            output += f"{operators[j]}"
+    output += f"= {bin(result_decimal)[2:]}"
+    if is_division:
+        remainder = decimals[0] % decimals[1]
+        output += f"\nRemainder(Binary): {bin(remainder)[2:]}"
+    else:
+        output += ""
+    output += "\nDecimal value:\n"
+    for j in range(len(decimals)):
+        output += f"{decimals[j]} "
+        if j < len(operators):
+            output += f"{operators[j]} "
+    output += f"= {result_decimal}\n"
+    if is_division:
+        remainder = decimals[0] % decimals[1]
+        output += f"Remainder(Decimal): {remainder}"
+    else:
+        output += ""
+    return output.replace("b", "")
+
 def main():
     print(banner)
     print("For BSIT 1-1 lang to bruh")
@@ -145,6 +191,7 @@ def main():
     print("B. Binary to Text")
     print("C. Octal to Hexadecimal")
     print("D. Hexadecimal to Octal")
+    print("E. Binary Calculator")
     while True:
         choice = input("Enter your choice: ")
         if choice == '':
@@ -191,6 +238,10 @@ def main():
         elif choice.upper() == 'D':
             hexadecimal = input("Enter a hexadecimal number: ")
             print(f"Octal: {hexadecimal_to_octal(hexadecimal)}")
+        elif choice.upper() == 'E':
+            expression = input("Enter the binary expression: ")
+            output = binary_calculator(expression)
+            print(output)
         else:
             print("Invalid choice. Please try again.")
             
