@@ -84,7 +84,7 @@ def display_login_details(logins, encryption_key):
 
     for login in logins:
         origin_url, action_url, username, encrypted_password, date_created, date_last_used = login
-        password = decrypt_chrome_password(encrypted_password, encryption_key)
+        password = decrypt_chrome_password(encrypted_password, encryption_key)  # Pass encryption_key here
         
         if username and password:
             # Format and display each login entry
@@ -110,7 +110,7 @@ def main():
 
     logins = retrieve_saved_logins(backup_db_path)
     if logins:
-        display_login_details(logins, encryption_key)
+        display_login_details(logins, encryption_key)  # Pass encryption_key to display_login_details
 
     # Step 3: Clean up
     remove_db_backup()
