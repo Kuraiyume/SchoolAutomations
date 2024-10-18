@@ -76,7 +76,7 @@ def remove_db_backup():
     except OSError as remove_error:
         print(f"Failed to remove backup database: {remove_error}")
 
-def display_login_details(logins):
+def display_login_details(logins, encryption_key):
     """Display login information in a well-formatted manner."""
     print("\n" + "="*70)
     print(f"{'Origin URL':<30} {'Action URL':<30} {'Username':<20} {'Password':<20} {'Creation Date':<20} {'Last Used':<20}")
@@ -110,7 +110,7 @@ def main():
 
     logins = retrieve_saved_logins(backup_db_path)
     if logins:
-        display_login_details(logins)
+        display_login_details(logins, encryption_key)
 
     # Step 3: Clean up
     remove_db_backup()
